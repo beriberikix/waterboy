@@ -7,6 +7,7 @@ require './models/match'
 
 get '/' do
   @match = Match.current
+  @matches = Match.all.order('created_at desc')
 
   erb :index
 end
@@ -31,6 +32,19 @@ end
 
 get '/red/down' do
   Match.delete_goal!(:red)
+
+  redirect "/"
+end
+
+get '/match/new' do
+  Match.create!
+
+  redirect "/"
+end
+
+get '/match/delete' do
+  Match.current.goals.destroy_all
+  Match.current.destroy
 
   redirect "/"
 end

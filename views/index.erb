@@ -31,10 +31,26 @@
       <span><%= @match.goals.count %></span>
     </div>
 
-    <div>
-      <span>Match over: </span>
-      <span><%= @match.over? %></span>
-    </div>
+    <a href='/match/new'><button>New Match</button></a>
+    <a href='/match/delete'><button>Delete Match</button></a>
+
+    <hr>
+
+    <h2>History</h2>
+    <table>
+      <tr>
+        <th>Blue</th>
+        <th>Red</th>
+        <th>Time</th>
+      </tr>
+      <% @matches.each do |match| %>
+        <tr>
+          <td><%= match.goals_by("blue").count %></td>
+          <td><%= match.goals_by("red").count %></td>
+          <td><%= match.created_at %></td>
+        </tr>
+      <% end %>
+    </table>
 
   </body>
 </html>

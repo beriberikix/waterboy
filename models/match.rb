@@ -2,6 +2,7 @@ class Match < ActiveRecord::Base
 
   def self.delete_goal!(team)
     # TODO(samstern): Check to make sure not deleting 0th goal
+    # TODO(samstern): Check that there is not a string of empty matches
     Goal.last_goal(team).destroy
     Match.current.destroy if Match.current.empty?
   end
