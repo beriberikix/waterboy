@@ -1,0 +1,6 @@
+development:
+  adapter: postgresql
+  database: waterboy
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASS'] %>
+  host: localhost

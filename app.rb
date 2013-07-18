@@ -1,25 +1,38 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/activerecord'
+require './config/environments'
+require './models/goal'
+require './models/match'
 
 get '/' do
+  @match = Match.current
+
   erb :index
 end
 
 get '/blue/up' do
-  "BLUE UP"
+  Match.current.record_goal!(:blue)
+
+  redirect "/"
 end
 
 get '/blue/down' do
-  "BLUE DOWN"
+  Goal.last_goal(:blue).destroy
+
+  redirect "/"
 end
 
 get '/red/up' do
-  "RED UP"
+  Match.current.record_goal!(:red)
+
+  redirect "/"
 end
 
 get '/red/down' do
-  "RED DOWN"
+  Goal.last_goal(:red).destroy
+
+  redirect "/"
 end
 
 get '/debugip' do

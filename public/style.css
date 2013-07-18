@@ -1,0 +1,25 @@
+body {
+  font-family: arial;
+}
+
+#bluescore {
+  background: #4285F4;
+}
+
+#redscore {
+  background: #DB4437;
+}
+
+.score-box {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  color: #E6E6E6;
+  font-size: 30pt;
+}
+
+.score {
+  line-height: 100px;
+  vertical-align: middle;
+}
