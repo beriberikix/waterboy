@@ -4,9 +4,7 @@
   </head>
 
   <body>
-
-    <h3>Hello, Sinatra!</h3>
-    <div>Welcome to project waterboy!</div>
+    <h1>Project Waterboy</h1>
 
     <div id="bluescore" class="score-box">
       <span class="score">
@@ -20,14 +18,22 @@
       </span>
     </div>
 
+    <br><br>
+    <hr>
+
     <div>
       <span>Match Started: </span>
       <span><%= @match.created_at %></span>
     </div>
 
     <div>
-      <span>Total goals: </span>
+      <span>Goals in match: </span>
       <span><%= @match.goals.count %></span>
+    </div>
+
+    <div>
+      <span>Match over: </span>
+      <span><%= @match.over? %></span>
     </div>
 
   </body>

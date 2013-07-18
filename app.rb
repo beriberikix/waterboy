@@ -18,7 +18,7 @@ get '/blue/up' do
 end
 
 get '/blue/down' do
-  Goal.last_goal(:blue).destroy
+  Match.delete_goal!(:blue)
 
   redirect "/"
 end
@@ -30,7 +30,7 @@ get '/red/up' do
 end
 
 get '/red/down' do
-  Goal.last_goal(:red).destroy
+  Match.delete_goal!(:red)
 
   redirect "/"
 end
