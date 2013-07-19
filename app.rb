@@ -43,6 +43,7 @@ get '/match/new' do
 end
 
 get '/match/delete' do
+  # Delete the current match
   Match.current.goals.destroy_all
   Match.current.destroy
 

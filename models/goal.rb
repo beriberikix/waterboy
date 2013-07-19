@@ -1,5 +1,7 @@
 class Goal < ActiveRecord::Base
 
+  belongs_to :match
+
   def self.last_goal(team)
     where(team: team).order('updated_at desc').first
   end

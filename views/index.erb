@@ -1,56 +1,143 @@
 <html>
   <head>
+    <title>Project Waterboy</title>
+
+
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/furatto.css">
+    <link rel="stylesheet" type="text/css" href="css/normalize.css">
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="js/furatto.min.js"></script>
   </head>
 
   <body>
-    <h1>Project Waterboy</h1>
+    <div class="jPanelMenu-panel" style="position: relative; left: 0px;">
 
-    <div id="bluescore" class="score-box">
-      <span class="score">
-        <%= @match.goals_by("blue").count %>
-      </span>
+      <!-- Start Navbar -->
+      <div class="navbar inverse-navbar navbar-fixed-top navbar-alpha">
+        <div class="navbar-inner">
+          <div class="container">
+            <a href="#menu" class="menu-trigger meteocon" data-meteocon="M"></a>
+            <div class="nav-collapse collapse">
+              <nav id="menu">
+                <ul class="nav">
+                  <li>
+                    <a class="brand" href="/">Waterboy</a>
+                  </li>
+                  <li>
+                    <a href="#">About</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Navbar -->
+
+      <!-- Begin Main Container -->
+      <div class="main-container">
+
+        <!-- Begin Title -->
+        <div class="row-fluid">
+          <div class="span12">
+            <div class="furatto-block">
+              <div class="furatto-large-header">
+                <div class="furatto-large-container">
+                  <h1 class="large-header">
+                    Project Waterboy
+                  </h1>
+                  <p class="motto">
+                    Scoreboard
+                  </p>
+                  <hr/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Title -->
+
+        <!-- Begin Main Content Block -->
+        <div class="container-center">
+          <div class="row-fluid">
+            <div class="span12">
+
+              <div class="row-fluid">
+                <div id="bluescore" class="score-box span6">
+                  <span class="score">
+                    <%= @match.goals_by("blue").count %>
+                  </span>
+                </div>
+
+                <div id="redscore" class="score-box span6">
+                  <span class="score">
+                    <%= @match.goals_by("red").count %>
+                  </span>
+                </div>
+              </div>
+
+
+              <h2>Options</h2>
+
+              <a href='/match/new'>
+                <button class="btn">
+                  New Match
+                </button>
+              </a>
+              <a href='/match/delete'>
+                <button class="btn">
+                  Delete Match
+                </button>
+              </a>
+
+              <a href="/blue/up">
+                <button class="btn btn-primary">
+                  Blue &#x25B2;
+                </button>
+              </a>
+              <a href="/blue/down">
+                <button class="btn btn-primary">
+                  Blue &#x25BC;
+                </button>
+              </a>
+              <a  href="/red/up">
+                <button class="btn btn-danger">
+                  Red &#x25B2;
+                </button>
+              </a>
+              <a href="/red/down">
+                <button class="btn btn-danger">
+                  Red &#x25BC;
+                </button>
+              </a>
+
+
+              <h2>History</h2>
+              <table class="table">
+                <tr>
+                  <th>Blue</th>
+                  <th>Red</th>
+                  <th>Start</th>
+                </tr>
+                <% @matches.each do |match| %>
+                  <tr>
+                    <td><%= match.goals_by("blue").count %></td>
+                    <td><%= match.goals_by("red").count %></td>
+                    <td><%= match.created_at %></td>
+                  </tr>
+                <% end %>
+              </table>
+
+            </div>
+          </div>
+        </div>
+        <!-- End Main Content Block --.
+
+      </div>
+      <!-- End Main Container -->
     </div>
-
-    <div id="redscore" class="score-box">
-      <span class="score">
-        <%= @match.goals_by("red").count %>
-      </span>
-    </div>
-
-    <br><br>
-    <hr>
-
-    <div>
-      <span>Match Started: </span>
-      <span><%= @match.created_at %></span>
-    </div>
-
-    <div>
-      <span>Goals in match: </span>
-      <span><%= @match.goals.count %></span>
-    </div>
-
-    <a href='/match/new'><button>New Match</button></a>
-    <a href='/match/delete'><button>Delete Match</button></a>
-
-    <hr>
-
-    <h2>History</h2>
-    <table>
-      <tr>
-        <th>Blue</th>
-        <th>Red</th>
-        <th>Time</th>
-      </tr>
-      <% @matches.each do |match| %>
-        <tr>
-          <td><%= match.goals_by("blue").count %></td>
-          <td><%= match.goals_by("red").count %></td>
-          <td><%= match.created_at %></td>
-        </tr>
-      <% end %>
-    </table>
 
   </body>
 </html>

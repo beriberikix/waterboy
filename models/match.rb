@@ -1,5 +1,7 @@
 class Match < ActiveRecord::Base
 
+  has_many :goals
+
   def self.delete_goal!(team)
     # TODO(samstern): Check to make sure not deleting 0th goal
     # TODO(samstern): Check that there is not a string of empty matches
@@ -8,11 +10,7 @@ class Match < ActiveRecord::Base
   end
 
   def record_goal!(team)
-    Goal.new(team: team).save!
-  end
-
-  def goals
-    Goal.where(['updated_at > ?', created_at])
+    Goal.new(team: team, match_id: id).save!
   end
 
   def goals_by(team)
@@ -22,7 +20,9 @@ class Match < ActiveRecord::Base
   def self.current
     last_match = Match.last
 
-    if (last_match.nil? || last_match.over?)
+    if (last_match.nil?)
+      return Match.create!
+    elsif (last_match.over?)
       return Match.create!
     else
       return last_match
