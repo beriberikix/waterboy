@@ -50,6 +50,10 @@ get '/match/delete' do
   redirect "/"
 end
 
+get '/checkin' do
+  "COOL"
+end
+
 get '/debugip' do
   "COOL"
 end
