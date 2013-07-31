@@ -21,13 +21,20 @@
       };
 
       function parseMessageData(data) {
-        var scorePattern = /b([\d+])-r([\d+])/;
+        var scorePattern = /b([0-9]+)-r([0-9]+)/;
         if (scorePattern.test(data)) {
           var res = scorePattern.exec(data);
           $("#b-score").text(res[1]);
           $("#r-score").text(res[2]);
         }
       }
+
+      $(document).ready(function() {
+        $("a.async").click(function(e) {
+          e.preventDefault();
+          $.get($(this).attr("href"));
+        });
+      });
     </script>
     <div class="jPanelMenu-panel" style="position: relative; left: 0px;">
 
@@ -98,33 +105,33 @@
 
               <h2>Options</h2>
 
-              <a href='/match/new'>
+              <a href='/match/new' class="async">
                 <button class="btn">
                   New Match
                 </button>
               </a>
-              <a href='/match/delete'>
+              <a href='/match/delete' class="async">
                 <button class="btn">
                   Delete Match
                 </button>
               </a>
 
-              <a href="/blue/up">
+              <a href="/blue/up" class="async">
                 <button class="btn btn-primary">
                   Blue &#x25B2;
                 </button>
               </a>
-              <a href="/blue/down">
+              <a href="/blue/down" class="async">
                 <button class="btn btn-primary">
                   Blue &#x25BC;
                 </button>
               </a>
-              <a  href="/red/up">
+              <a  href="/red/up" class="async">
                 <button class="btn btn-danger">
                   Red &#x25B2;
                 </button>
               </a>
-              <a href="/red/down">
+              <a href="/red/down" class="async">
                 <button class="btn btn-danger">
                   Red &#x25BC;
                 </button>
