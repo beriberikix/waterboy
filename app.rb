@@ -15,6 +15,21 @@ $channel = EM::Channel.new
 EventMachine.run do
   class App < Sinatra::Base
 
+    # Push the score to the client after each request
+    ['/*'].each do |path|
+      after path do
+        $channel.push score_string
+      end
+    end
+
+    # Create a simple string containing the score
+    def score_string
+      blue_goals = Match.current.goals_by("blue").count
+      red_goals = Match.current.goals_by("red").count
+
+      "b#{blue_goals}-r#{red_goals}"
+    end
+
     get '/' do
       @match = Match.current
       @matches = Match.all.order('created_at desc')
@@ -24,28 +39,24 @@ EventMachine.run do
 
     get '/blue/up' do
       Match.current.record_goal!(:blue)
-      $channel.push "blue-up"
 
       "blue-up"
     end
 
     get '/blue/down' do
       Match.delete_goal!(:blue)
-      $channel.push "blue-down"
 
       "blue-down"
     end
 
     get '/red/up' do
       Match.current.record_goal!(:red)
-      $channel.push "red-up"
 
       "red-up"
     end
 
     get '/red/down' do
       Match.delete_goal!(:red)
-      $channel.push "red-down"
 
       "red-down"
     end

@@ -21,21 +21,12 @@
       };
 
       function parseMessageData(data) {
-        var blueGoals = parseInt($("#b-score").text());
-        var redGoals = parseInt($("#r-score").text());
-
-        if (data.indexOf("red-up") > -1) {
-          redGoals++;
-        } else if (data.indexOf("blue-up") > -1) {
-          blueGoals++;
-        } else if (data.indexOf("red-down") > -1) {
-          blueGoals--;
-        } else if (data.indexOf("blue-down") > -1) {
-          blueGoals--;
+        var scorePattern = /b([\d+])-r([\d+])/;
+        if (scorePattern.test(data)) {
+          var res = scorePattern.exec(data);
+          $("#b-score").text(res[1]);
+          $("#r-score").text(res[2]);
         }
-
-        $("#b-score").text(blueGoals);
-        $("#r-score").text(redGoals);
       }
     </script>
     <div class="jPanelMenu-panel" style="position: relative; left: 0px;">
