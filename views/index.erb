@@ -12,6 +12,32 @@
   </head>
 
   <body>
+
+    <script>
+      var socket = new WebSocket('ws://localhost:3002');
+      socket.onmessage = function(msg) {
+        console.log(msg);
+        parseMessageData(msg.data);
+      };
+
+      function parseMessageData(data) {
+        var blueGoals = parseInt($("#b-score").text());
+        var redGoals = parseInt($("#r-score").text());
+
+        if (data.indexOf("red-up") > -1) {
+          redGoals++;
+        } else if (data.indexOf("blue-up") > -1) {
+          blueGoals++;
+        } else if (data.indexOf("red-down") > -1) {
+          blueGoals--;
+        } else if (data.indexOf("blue-down") > -1) {
+          blueGoals--;
+        }
+
+        $("#b-score").text(blueGoals);
+        $("#r-score").text(redGoals);
+      }
+    </script>
     <div class="jPanelMenu-panel" style="position: relative; left: 0px;">
 
       <!-- Start Navbar -->
@@ -66,13 +92,13 @@
 
               <div class="row-fluid">
                 <div id="bluescore" class="score-box span6">
-                  <span class="score">
+                  <span class="score" id="b-score">
                     <%= @match.goals_by("blue").count %>
                   </span>
                 </div>
 
                 <div id="redscore" class="score-box span6">
-                  <span class="score">
+                  <span class="score" id="r-score">
                     <%= @match.goals_by("red").count %>
                   </span>
                 </div>

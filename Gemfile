@@ -4,3 +4,11 @@ gem "sinatra"
 gem "activerecord"
 gem "sinatra-activerecord"
 gem "pg"
+gem 'thin'
+
+# Websockets
+gem 'eventmachine'
+gem 'em-websocket'
+
+# ActiveRecord + EventMachine = Trouble
+gem 'neverblock'

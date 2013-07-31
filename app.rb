@@ -1,59 +1,93 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/activerecord'
+require 'eventmachine'
+require 'em-websocket'
+require 'thin'
+
+require './config/server'
 require './config/environments'
 require './models/goal'
 require './models/match'
 
-get '/' do
-  @match = Match.current
-  @matches = Match.all.order('created_at desc')
+$channel = EM::Channel.new
 
-  erb :index
-end
+EventMachine.run do
+  class App < Sinatra::Base
 
-get '/blue/up' do
-  Match.current.record_goal!(:blue)
+    get '/' do
+      @match = Match.current
+      @matches = Match.all.order('created_at desc')
 
-  redirect "/"
-end
+      erb :index
+    end
 
-get '/blue/down' do
-  Match.delete_goal!(:blue)
+    get '/blue/up' do
+      Match.current.record_goal!(:blue)
+      $channel.push "blue-up"
 
-  redirect "/"
-end
+      "blue-up"
+    end
 
-get '/red/up' do
-  Match.current.record_goal!(:red)
+    get '/blue/down' do
+      Match.delete_goal!(:blue)
+      $channel.push "blue-down"
 
-  redirect "/"
-end
+      "blue-down"
+    end
 
-get '/red/down' do
-  Match.delete_goal!(:red)
+    get '/red/up' do
+      Match.current.record_goal!(:red)
+      $channel.push "red-up"
 
-  redirect "/"
-end
+      "red-up"
+    end
 
-get '/match/new' do
-  Match.create!
+    get '/red/down' do
+      Match.delete_goal!(:red)
+      $channel.push "red-down"
 
-  redirect "/"
-end
+      "red-down"
+    end
 
-get '/match/delete' do
-  # Delete the current match
-  Match.current.goals.destroy_all
-  Match.current.destroy
+    get '/match/new' do
+      Match.create!
+      $channel.push "new-match"
 
-  redirect "/"
-end
+      "new-match"
+    end
 
-get '/checkin' do
-  "COOL"
-end
+    get '/match/delete' do
+      # Delete the current match
+      Match.current.goals.destroy_all
+      Match.current.destroy
+      $channel.push "delete-match"
 
-get '/debugip' do
-  "COOL"
+      "delete-match"
+    end
+
+    get '/checkin' do
+      "COOL"
+    end
+
+    get '/debugip' do
+      "COOL"
+    end
+  end
+
+  EventMachine::WebSocket.start(:host => '0.0.0.0', :port => 3002) do |ws|
+    ws.onopen {
+      sid = $channel.subscribe { |msg| ws.send msg }
+
+      ws.onmessage { |msg|
+        $channel.push "You sent: #{msg}"
+      }
+
+      ws.onclose {
+        $channel.unsubscribe(sid)
+      }
+    }
+  end
+
+  Thin::Server.start App, '0.0.0.0', 3000
 end

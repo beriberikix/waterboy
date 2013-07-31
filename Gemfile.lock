@@ -19,9 +19,17 @@ GEM
     arel (4.0.0)
     atomic (1.1.10)
     builder (3.1.4)
+    daemons (1.1.9)
+    em-websocket (0.5.0)
+      eventmachine (>= 0.12.9)
+      http_parser.rb (~> 0.5.3)
+    eventmachine (1.0.3)
+    http_parser.rb (0.5.3)
     i18n (0.6.4)
     minitest (4.7.5)
     multi_json (1.7.7)
+    neverblock (0.1.6.2)
+      eventmachine (>= 0.12.2)
     pg (0.15.1)
     rack (1.5.2)
     rack-protection (1.5.0)
@@ -33,7 +41,11 @@ GEM
     sinatra-activerecord (1.2.3)
       activerecord (>= 3.0)
       sinatra (~> 1.0)
-    thread_safe (0.1.0)
+    thin (1.5.1)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
+    thread_safe (0.1.2)
       atomic
     tilt (1.4.1)
     tzinfo (0.3.37)
@@ -43,6 +55,10 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  em-websocket
+  eventmachine
+  neverblock
   pg
   sinatra
   sinatra-activerecord
+  thin
