@@ -4,6 +4,7 @@ require 'sinatra/activerecord'
 require 'eventmachine'
 require 'em-websocket'
 require 'thin'
+require 'json'
 
 require './config/server'
 require './config/environments'
@@ -78,6 +79,8 @@ EventMachine.run do
     end
 
     get '/checkin' do
+      $channel.push params.to_json
+
       "COOL"
     end
 

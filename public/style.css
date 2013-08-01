@@ -18,3 +18,12 @@
   line-height: 100px;
   vertical-align: middle;
 }
+
+.userpic {
+  padding: 10px;
+}
+
+.userpic img {
+  height: 50px;
+  width: 50px;
+}

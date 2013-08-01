@@ -14,7 +14,7 @@
   <body>
 
     <script>
-      var socket = new WebSocket('ws://localhost:3002');
+      var socket = new WebSocket('ws://' + window.location.hostname + ':3002');
       socket.onmessage = function(msg) {
         console.log(msg);
         parseMessageData(msg.data);
@@ -23,9 +23,35 @@
       function parseMessageData(data) {
         var scorePattern = /b([0-9]+)-r([0-9]+)/;
         if (scorePattern.test(data)) {
+          // Score update
           var res = scorePattern.exec(data);
           $("#b-score").text(res[1]);
           $("#r-score").text(res[2]);
+        } else if (data.indexOf("uid") >= 0) {
+          // Player checking in
+          var obj = JSON.parse(data);
+          var nameElement;
+          var imgElement;
+          if (obj.team == "BLUE") {
+            if (obj.position == "ONE") {
+              nameElement = $("#bp1 > span");
+              imgElement = $("#bp1 > img");
+            } else if (obj.position == "TWO") {
+              nameElement = $("#bp2 > span");
+              imgElement = $("#bp2 > img");
+            }
+          } else if (obj.team == "RED") {
+            if (obj.position == "ONE") {
+              nameElement = $("#rp1 > span");
+              imgElement = $("#rp1 > img");
+            } else if (obj.position == "TWO") {
+              nameElement = $("#rp2 > span");
+              imgElement = $("#rp2 > img");
+            }
+          }
+
+          nameElement.text(obj.name);
+          imgElement.attr('src', obj.image_url);
         }
       }
 
@@ -99,6 +125,38 @@
                   <span class="score" id="r-score">
                     <%= @match.goals_by("red").count %>
                   </span>
+                </div>
+              </div>
+
+              <div class="row-fluid">
+                <!-- BLUE TEAM -->
+                <div class="userpic span3" id="bp1">
+                  <img src="/img/blankuser.png"></img>
+                  <span class="username">
+                    ???
+                  </span>
+                </div>
+
+                <div class="userpic span3" id="bp2" align="right">
+                  <span class="username">
+                    ???
+                  </span>
+                  <img src="/img/blankuser.png"></img>
+                </div>
+
+                <!-- RED TEAM -->
+                <div class="userpic span3" id="rp1">
+                  <img src="/img/blankuser.png"></img>
+                  <span class="username">
+                    ???
+                  </span>
+                </div>
+
+                <div class="userpic span3" id="rp2" align="right">
+                  <span class="username">
+                    ???
+                  </span>
+                  <img src="/img/blankuser.png"></img>
                 </div>
               </div>
 
