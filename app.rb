@@ -20,10 +20,7 @@ EventMachine.run do
     # Push the score to the client after each request
     ['/*'].each do |path|
       after path do
-        $channel.push score_string
-        if Match.current.empty? && !Match.current.has_players?
-          $channel.push "new-match"
-        end
+        $channel.push ({ score: score_string }).to_json
       end
     end
 
@@ -68,7 +65,8 @@ EventMachine.run do
 
     get '/match/new' do
       Match.create!
-      $channel.push "new-match"
+      $channel.push ({ message: "new-match" }).to_json
+      $channel.push ({ match: Match.current }).to_json
 
       "new-match"
     end
@@ -77,9 +75,14 @@ EventMachine.run do
       # Delete the current match
       Match.current.goals.destroy_all
       Match.current.destroy
-      $channel.push "delete-match"
+      $channel.push ({ message: "delete-match" }).to_json
+      $channel.push ({ match: Match.current }).to_json
 
       "delete-match"
+    end
+
+    get '/players/:id' do
+      Player.find(params[:id]).to_json
     end
 
     get '/checkin' do
@@ -88,8 +91,7 @@ EventMachine.run do
       pos = params['position'].to_i
 
       Match.current.set_player!(team, pos, player)
-
-      $channel.push params.to_json
+      $channel.push ({ match: Match.current }).to_json
 
       "COOL"
     end
@@ -102,6 +104,8 @@ EventMachine.run do
   EventMachine::WebSocket.start(:host => '0.0.0.0', :port => 3002) do |ws|
     ws.onopen {
       sid = $channel.subscribe { |msg| ws.send msg }
+
+      $channel.push ({ match: Match.current }).to_json
 
       ws.onmessage { |msg|
         $channel.push "You sent: #{msg}"

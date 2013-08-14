@@ -6,43 +6,55 @@ socket.onmessage = function(msg) {
 
 function parseMessageData(data) {
   var scorePattern = /b([0-9]+)-r([0-9]+)/;
+  var obj = JSON.parse(data);
   if (scorePattern.test(data)) {
     // Score update
     var res = scorePattern.exec(data);
     $("#b-score").text(res[1]);
     $("#r-score").text(res[2]);
-  } else if (data.indexOf("uid") >= 0) {
-    // Player checking in
-    var obj = JSON.parse(data);
-    var nameElement;
-    var imgElement;
-
-    // Parse, this code sucks I knows
-    if (obj.team == "BLUE") {
-      if (obj.position == "1") {
-        nameElement = $("#bp1 > span");
-        imgElement = $("#bp1 > img");
-      } else if (obj.position == "2") {
-        nameElement = $("#bp2 > span");
-        imgElement = $("#bp2 > img");
-      }
-    } else if (obj.team == "RED") {
-      if (obj.position == "1") {
-        nameElement = $("#rp1 > span");
-        imgElement = $("#rp1 > img");
-      } else if (obj.position == "2") {
-        nameElement = $("#rp2 > span");
-        imgElement = $("#rp2 > img");
-      }
-    }
-
-    // Set the DOM, sup?
-    nameElement.text(obj.name);
-    imgElement.attr('src', obj.image_url);
   } else if (data.indexOf("new-match") >= 0) {
       $(".userpic > img").attr("src","/img/blankuser.png");
       $(".username").text("???");
   }
+
+  // Set player faces
+  if (obj.match != null) {
+    var match = obj.match;
+    if (match.r1_id != null) {
+      player = getPlayer(match.r1_id);
+      setPlayer("r1", player);
+    }
+    if (match.r2_id != null) {
+      player = getPlayer(match.r2_id);
+      setPlayer("r2", player);
+    }
+    if (match.b1_id != null) {
+      player = getPlayer(match.b1_id);
+      setPlayer("b1", player);
+    }
+    if (match.b2_id != null) {
+      player = getPlayer(match.b2_id);
+      setPlayer("b2", player);
+    }
+  }
+}
+
+function setPlayer(selector, player) {
+  var selectString = "#" + selector;
+  var nameElement = $(selectString + " > span");
+  var imgElement = $(selectString + " > img");
+
+  nameElement.text(player.name);
+  imgElement.attr('src', player.image_url);
+}
+
+function getPlayer(id) {
+  return JSON.parse(
+    $.ajax({
+        type: "GET",
+        url: "/players/" + id,
+        async: false,
+    }).responseText);
 }
 
 $(document).ready(function() {
