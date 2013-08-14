@@ -48,13 +48,13 @@
               nameElement = $("#rp2 > span");
               imgElement = $("#rp2 > img");
             }
-          } else if (data.indexOf("new-match") >= 0) {
-            $(".userpic").attr("src","/img/blankuser.png");
-            $(".username").text("???");
           }
 
           nameElement.text(obj.name);
           imgElement.attr('src', obj.image_url);
+        } else if (data.indexOf("new-match") >= 0) {
+            $(".userpic").attr("src","/img/blankuser.png");
+            $(".username").text("???");
         }
       }
 
