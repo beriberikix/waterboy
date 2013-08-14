@@ -21,8 +21,7 @@ EventMachine.run do
     ['/*'].each do |path|
       after path do
         $channel.push score_string
-        if Match.current.empty?
-          # TODO(samstern): Don't do this if there are already players
+        if Match.current.empty? && !Match.current.has_players?
           $channel.push "new-match"
         end
       end

@@ -86,4 +86,8 @@ class Match < ActiveRecord::Base
     goals.count == 0
   end
 
+  def has_players?
+    !(r1_id.nil? && r2_id.nil? && b1_id.nil? && b2_id.nil?)
+  end
+
 end
