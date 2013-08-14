@@ -9,6 +9,49 @@ class Match < ActiveRecord::Base
     Match.current.destroy if Match.current.empty?
   end
 
+  # Get a player by team and position
+  # Params:
+  # +team+: symbol for the team (:red or :blue)
+  # +position+: int for the position (1 or 2)
+  def get_player(team, position)
+    if team.eql?(:red)
+      if position == 1
+        Player.find(r1_id)
+      elsif position == 2
+        Player.find(r2_id)
+      end
+    elsif team.eql?(:blue)
+      if position == 1
+        Player.find(b1_id)
+      elsif position == 2
+        Player.find(b2_id)
+      end
+    end
+  end
+
+  # Set a player by team and position
+  # Params:
+  # +team+: symbol for the team (:red or :blue)
+  # +position+: int for the position (1 or 2)
+  # +player+: the player object to set
+  def set_player!(team, position, player)
+    if team.eql?(:red)
+      if position == 1
+        self.r1_id = player.id
+      elsif position == 2
+        self.r2_id = player.id
+      end
+    elsif team.eql?(:blue)
+      if position == 1
+        self.b1_id = player.id
+      elsif position == 2
+        self.b2_id = player.id
+      end
+    end
+
+    save!
+  end
+
   def record_goal!(team)
     Goal.new(team: team, match_id: id).save!
   end

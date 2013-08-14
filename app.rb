@@ -10,6 +10,7 @@ require './config/server'
 require './config/environments'
 require './models/goal'
 require './models/match'
+require './models/player'
 
 $channel = EM::Channel.new
 
@@ -79,6 +80,12 @@ EventMachine.run do
     end
 
     get '/checkin' do
+      player = Player.from_params(params)
+      team = params['team'].downcase.to_sym
+      pos = params['position'].to_i
+
+      Match.current.set_player!(team, pos, player)
+
       $channel.push params.to_json
 
       "COOL"
@@ -103,5 +110,5 @@ EventMachine.run do
     }
   end
 
-  Thin::Server.start App, '0.0.0.0', 3000
+  Thin::Server.start App, '0.0.0.0', 3001
 end

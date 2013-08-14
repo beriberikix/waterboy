@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130719201414) do
+ActiveRecord::Schema.define(version: 20130814220427) do
 
   create_table "goals", force: true do |t|
     t.string   "team"
@@ -20,6 +20,18 @@ ActiveRecord::Schema.define(version: 20130719201414) do
   end
 
   create_table "matches", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "b1_id"
+    t.integer  "b2_id"
+    t.integer  "r1_id"
+    t.integer  "r2_id"
+  end
+
+  create_table "players", force: true do |t|
+    t.string   "name"
+    t.string   "uid"
+    t.string   "image_url"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
