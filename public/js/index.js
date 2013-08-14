@@ -40,7 +40,7 @@ function parseMessageData(data) {
     nameElement.text(obj.name);
     imgElement.attr('src', obj.image_url);
   } else if (data.indexOf("new-match") >= 0) {
-      $(".userpic").attr("src","/img/blankuser.png");
+      $(".userpic > img").attr("src","/img/blankuser.png");
       $(".username").text("???");
   }
 }
