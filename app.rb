@@ -7,7 +7,7 @@ require 'thin'
 require 'json'
 
 require './config/server'
-require './config/environments'
+# require './config/environments'
 require './models/goal'
 require './models/match'
 require './models/player'

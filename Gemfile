@@ -6,6 +6,7 @@ gem "sinatra-activerecord"
 gem "pg"
 gem 'thin'
 gem 'json'
+gem 'sqlite3'
 
 # Websockets
 gem 'eventmachine'

@@ -1,6 +1,6 @@
 development:
-  adapter: postgresql
-  database: waterboy
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASS'] %>
+  adapter: sqlite3
+  database: db/waterboy.sqlite3
   host: localhost
+  pool: 5
+  timeout: 5000
